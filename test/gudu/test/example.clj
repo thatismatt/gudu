@@ -7,7 +7,9 @@
 
   (def my-routes
     {:home    ["home"]
-     :invoice ["invoice" gudu/int-seg]}) ;; string-seg, regex-seg, etc...
+     :invoice ["invoice" gudu/int-seg] ;; string-seg, regex-seg, etc...
+     :blog    ["blog" {:latest  [] ;; /blog
+                       :archive ["archive" gudu/int-seg gudu/int-seg]}]}) ;; /blog/archive/2013/01
 
   (def my-gu
     (gudu/gu my-routes))
