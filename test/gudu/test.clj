@@ -2,18 +2,23 @@
   (:use clojure.test
         gudu))
 
-(deftest one-static-url
-  (let [routes-1 {:home ["home"]
-                  :sub  ["a" "b"]}
-        my-gu (gu routes-1)
-        my-du (du routes-1)]
+(deftest test-static-routes
+  (let [static-routes {:home   []
+                       :blog   ["blog"]
+                       :sub    ["a" "b"]
+                       :subsub ["a" "b" "c"]}
+        my-gu (gu static-routes)
+        my-du (du static-routes)]
     (testing "gu"
-      (is (= (my-gu :home) "/home"))
-      (is (= (my-gu :sub) "/a/b")))
+      (is (= (my-gu :home)   "/"))
+      (is (= (my-gu :blog)   "/blog"))
+      (is (= (my-gu :sub)    "/a/b"))
+      (is (= (my-gu :subsub) "/a/b/c")))
     (testing "du"
-      (is (= (my-du "/home") :home))
-      (is (= (my-du "/a/b")  :sub)))))
+      (is (= (my-du "/")      :home))
+      (is (= (my-du "/blog")  :blog))
+      (is (= (my-du "/a/b")   :sub))
+      (is (= (my-du "/a/b/c") :subsub)))))
 
 ;; TODO
 ;;  - trailing slash
-;;  - root
