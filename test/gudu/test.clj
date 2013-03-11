@@ -18,7 +18,7 @@
       (is (= (my-du "/")      :home))
       (is (= (my-du "/blog")  :blog))
       (is (= (my-du "/a/b")   :sub))
-      (is (= (my-du "/a/b/c") :subsub)))))
-
-;; TODO
-;;  - trailing slash
+      (is (= (my-du "/a/b/c") :subsub)))
+    (testing "trailing slash"
+      (is (= (my-du "/blog/") :blog))
+      (is (= (my-du "/a/b/")  :sub)))))
