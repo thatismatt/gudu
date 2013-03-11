@@ -3,7 +3,8 @@
             [clojure.set :as set]))
 
 (defn- segment-url [url]
-  (filter (comp not empty?) (str/split url #"/")))
+  (filter (comp not empty?) ;; ignore leading & multiple slashes
+          (str/split url #"/")))
 
 (defn gu
   "Generate URL"
