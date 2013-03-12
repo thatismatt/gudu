@@ -6,11 +6,18 @@
   (filter (comp not empty?) ;; ignore leading & multiple slashes
           (str/split url #"/")))
 
+(defn- get-segments [routes [id & ids]]
+  (let [segments       (routes id)
+        [strings maps] (split-with string? segments)
+        route          (first maps)
+        segments-rest  (if (nil? route) [] (get-segments route ids))]
+    (concat strings segments-rest)))
+
 (defn gu
   "Generate URL"
   [routes]
-  (fn [id]
-    (let [segments (id routes)]
+  (fn [& ids]
+    (let [segments (get-segments routes ids)]
       (str "/" (str/join "/" segments)))))
 
 (defn du

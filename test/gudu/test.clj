@@ -22,3 +22,15 @@
     (testing "trailing slash"
       (is (= (my-du "/blog/") :blog))
       (is (= (my-du "/a/b/")  :sub)))))
+
+(deftest test-sub-routes
+  (let [blog-routes {:current []
+                     :archive ["archive"]}
+        sub-routes  {:home    []
+                     :blog    ["blog" blog-routes]}
+        my-gu (gu sub-routes)
+        my-du (du sub-routes)]
+    (testing "gu"
+      (is (= (my-gu :blog)          "/blog"))
+      (is (= (my-gu :blog :current) "/blog"))
+      (is (= (my-gu :blog :archive) "/blog/archive")))))
