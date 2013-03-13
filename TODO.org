@@ -1,6 +1,8 @@
 #+TITLE: gudu todos
 
 * TODO Route debugging
-* TODO Wrappers/Decorators that convert (and simplify) input to gu & output from du, e.g.:
-** [:a :b] = :a-b
-** [:a :b] = :b
+* TODO Wrappers/Decorators that convert (and simplify) input to gu & output from du
+** e.g.:
+    [:a :b] = :a-b
+    [:a :b] = :b
+* TODO Rewrite get-segments as tail recursive
