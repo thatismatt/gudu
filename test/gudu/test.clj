@@ -33,4 +33,8 @@
     (testing "gu"
       (is (= (my-gu :blog)          "/blog"))
       (is (= (my-gu :blog :current) "/blog"))
-      (is (= (my-gu :blog :archive) "/blog/archive")))))
+      (is (= (my-gu :blog :archive) "/blog/archive")))
+    (testing "du"
+      (is (= (my-du "/")             [:home]))
+      (is (= (my-du "/blog")         [:blog :current]))
+      (is (= (my-du "/blog/archive") [:blog :archive])))))
