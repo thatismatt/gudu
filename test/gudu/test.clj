@@ -15,13 +15,13 @@
       (is (= (my-gu :sub)    "/a/b"))
       (is (= (my-gu :subsub) "/a/b/c")))
     (testing "du"
-      (is (= (my-du "/")      :home))
-      (is (= (my-du "/blog")  :blog))
-      (is (= (my-du "/a/b")   :sub))
-      (is (= (my-du "/a/b/c") :subsub)))
+      (is (= (my-du "/")      [:home]))
+      (is (= (my-du "/blog")  [:blog]))
+      (is (= (my-du "/a/b")   [:sub]))
+      (is (= (my-du "/a/b/c") [:subsub])))
     (testing "trailing slash"
-      (is (= (my-du "/blog/") :blog))
-      (is (= (my-du "/a/b/")  :sub)))))
+      (is (= (my-du "/blog/") [:blog]))
+      (is (= (my-du "/a/b/")  [:sub])))))
 
 (deftest test-sub-routes
   (let [blog-routes {:current []

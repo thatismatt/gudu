@@ -24,4 +24,4 @@
   "Degenerate URL"
   [routes]
   (let [urls (set/map-invert routes)]
-    (fn [url] (urls (segment-url url)))))
+    (fn [url] [(urls (segment-url url))])))
