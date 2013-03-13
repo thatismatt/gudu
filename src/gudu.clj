@@ -9,27 +9,27 @@
 (declare process-string-segment process-map-segment)
 
 (defn- process-segments
-  ([routes args]
-     (process-segments routes args []))
-  ([[route & _ :as routes] args segments]
+  ([routes params]
+     (process-segments routes params []))
+  ([[route & _ :as routes] params segments]
      (if (empty? routes) ;; check anything else?
        segments
        (apply (cond
                (string? route) process-string-segment
                (map?    route) process-map-segment)
-              [routes args segments]))))
+              [routes params segments]))))
 
-(defn- process-string-segment [[route & routes] args segments]
-  (process-segments routes args (conj segments route)))
+(defn- process-string-segment [[route & routes] params segments]
+  (process-segments routes params (conj segments route)))
 
-(defn- process-map-segment [[route & routes] [arg & args] segments]
-  (process-segments (concat (route arg) routes) args segments))
+(defn- process-map-segment [[route & routes] [param & params] segments]
+  (process-segments (concat (route param) routes) params segments))
 
 (defn gu
   "Generate URL"
   [routes]
-  (fn [& args]
-    (let [segments (process-segments [routes] args)]
+  (fn [& params]
+    (let [segments (process-segments [routes] params)]
       (str "/" (str/join "/" segments)))))
 
 (defn du
