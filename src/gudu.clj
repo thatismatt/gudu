@@ -7,8 +7,7 @@
           (str/split url #"/")))
 
 (defn- get-segments [routes [id & ids]]
-  (let [segments       (routes id)
-        [strings maps] (split-with string? segments)
+  (let [[strings maps] (split-with string? (routes id))
         route          (first maps)
         segments-rest  (if (nil? route) [] (get-segments route ids))]
     (concat strings segments-rest)))
