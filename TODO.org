@@ -16,3 +16,4 @@
 ** int
 ** regex
 ** static choice (i.e. set of strings)
+* TODO Add some way to specify the default handlers (e.g. 404, 500)
