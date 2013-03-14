@@ -1,8 +1,18 @@
 #+TITLE: gudu todos
 
+* TODO Allow keywords for defining static route segments (aswell as strings)
 * TODO Route debugging
 * TODO Wrappers/Decorators that convert (and simplify) input to gu & output from du
 ** e.g.:
     [:a :b] = :a-b
     [:a :b] = :b
 * TODO Rewrite get-segments as tail recursive
+* TODO Generate navigation (as hiccup?) from routes
+* TODO Generate breadcrumb based on current URL
+* TODO Functions to walk routes
+** Rewrite gu/du to use new walk functions
+* TODO Change usage of cond for different segment types to use a protocol
+* TODO new segment types
+** int
+** regex
+** static choice (i.e. set of strings)
