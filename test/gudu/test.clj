@@ -19,6 +19,9 @@
       (is (= (my-du "/blog")  [:blog]))
       (is (= (my-du "/a/b")   [:sub]))
       (is (= (my-du "/a/b/c") [:subsub])))
+    (testing "missing"
+      (is (nil? (my-du "/missing")))
+      (is (nil? (my-du "/blog/missing"))))
     (testing "trailing slash"
       (is (= (my-du "/blog/") [:blog]))
       (is (= (my-du "/a/b/")  [:sub])))))

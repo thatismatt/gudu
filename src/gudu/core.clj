@@ -44,11 +44,11 @@
 (defn match-map-segment [[route & routes] segments params]
   ;; NOTE: currently routes is ignore, this implicitly
   ;; means that any routes after a map are ignored
-  (->> route
-       (remap #(match-segments % segments params))
-       (filter (fn [[k v]] ((comp not nil?) v)))
-       first
-       (apply cons)))
+  (let [match (->> route
+                   (remap #(match-segments % segments params))
+                   (filter (fn [[k v]] ((comp not nil?) v)))
+                   first)]
+    (and match (apply cons match))))
 
 (defn segment-url [url]
   (filter (comp not empty?) ;; ignore leading & multiple slashes
