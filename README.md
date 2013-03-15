@@ -10,15 +10,18 @@ runtime to route and request and construct URLs.
 
 ## Usage
 
-    (use gudu)
+    (require 'gudu)
 
-    (def my-routes ...)
+    (def my-routes {:home []
+                    :blog ["blog"])
 
-    (def my-gu (gu my-routes))
-    (def my-du (du my-routes))
+    (def gu (gudu/gu my-routes))
+    (def du (gudu/du my-routes))
 
-    (my-gu :blog)   ;; => "/blog"
-    (my-du "/blog") ;; => :blog
+    (gu :home)   ;; => "/"
+    (du "/")     ;; => :home
+    (gu :blog)   ;; => "/blog"
+    (du "/blog") ;; => :blog
 
 ## License
 
