@@ -1,6 +1,6 @@
 #+TITLE: gudu todos
 
-* TODO Allow keywords for defining static route segments (aswell as strings)
+* TODO Allow keywords for defining static route segments (as well as strings)
 * TODO Route debugging
 * TODO Wrappers/Decorators that convert (and simplify) input to gu & output from du
   e.g.:
