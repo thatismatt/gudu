@@ -12,8 +12,18 @@
 * TODO Functions to walk routes
 ** Rewrite gu/du to use new walk functions
 * TODO Change usage of cond for different segment types to use a protocol
-* TODO new segment types
+* TODO New segment types
+** string
 ** int
 ** regex
 ** static choice (i.e. set of strings)
 * TODO Add some way to specify the default handlers (e.g. 404, 500)
+* TODO Route Linter
+  Rules:
+** Nothing after map
+** No duplicate/overlapping segment URLs
+   e.g. { :a ["a"], :a2 ["a"] }
+        { :s [string-seg], :i [int-seg] }
+   Note: overlapping segments (but not entire URL) is ok.
+   e.g. { :z ["x" "y" "z"], :a ["x" "y" "z" "a"], :b ["x" "y" "z" "b"] }
+** Top level route must be a map
