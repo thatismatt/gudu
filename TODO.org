@@ -1,14 +1,10 @@
 #+TITLE: gudu todos
 
 * TODO Allow keywords for defining static route segments (as well as strings)
-* TODO Route debugging
 * TODO Wrappers/Decorators that convert (and simplify) input to gu & output from du
   e.g.:
     [:a :b] = :a-b
     [:a :b] = :b
-* TODO Rewrite get-segments as tail recursive
-* TODO Generate navigation (as hiccup?) from routes
-* TODO Generate breadcrumb based on current URL
 * TODO Functions to walk routes
 ** Rewrite gu/du to use new walk functions
 * TODO Change usage of cond for different segment types to use a protocol
@@ -20,8 +16,11 @@
 ** catch all/multi segment (e.g. wiki)
 * TODO Helper functions to map routes to handlers
 * TODO Add some way to specify the default handlers (e.g. 404, 500)
+* TODO Generate navigation (as hiccup?) from routes
+* TODO Generate breadcrumb based on current URL
 * TODO Change routes at runtime
   Note: what does this mean for gu, i.e. can you generate routes for other route configurations?
+* TODO Route debugging
 * TODO Route Linter
   Rules:
 ** Nothing after map
