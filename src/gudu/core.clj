@@ -18,8 +18,8 @@
 (defn process-string-segment [[route & routes] params segments]
   (process-segments routes params (conj segments route)))
 
-(defn process-map-segment [[route & routes] [param & params] segments]
-  (process-segments (concat (route param) routes) params segments))
+(defn process-map-segment [[route & _] [param & params] segments]
+  (process-segments (route param) params segments))
 
 (declare match-string-segment match-map-segment)
 
@@ -41,7 +41,7 @@
     (match-segments routes segments params)
     nil))
 
-(defn match-map-segment [[route & routes] segments params]
+(defn match-map-segment [[route & _] segments params]
   ;; NOTE: currently routes is ignore, this implicitly
   ;; means that any routes after a map segment are ignored
   (let [match (->> route
