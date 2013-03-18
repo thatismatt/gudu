@@ -6,19 +6,28 @@
   (let [static-routes {:home   []
                        :blog   ["blog"]
                        :sub    ["a" "b"]
-                       :subsub ["a" "b" "c"]}
+                       :subsub ["a" "b" "c"]
+                       :sym    [:w]
+                       :subsym [:x :y :z]
+                       :mixed  [:e "f" :g]}
         my-gu (gu static-routes)
         my-du (du static-routes)]
     (testing "gu"
       (is (= (my-gu :home)   "/"))
       (is (= (my-gu :blog)   "/blog"))
       (is (= (my-gu :sub)    "/a/b"))
-      (is (= (my-gu :subsub) "/a/b/c")))
+      (is (= (my-gu :subsub) "/a/b/c"))
+      (is (= (my-gu :sym)    "/w"))
+      (is (= (my-gu :subsym) "/x/y/z"))
+      (is (= (my-gu :mixed)  "/e/f/g")))
     (testing "du"
       (is (= (my-du "/")      [:home]))
       (is (= (my-du "/blog")  [:blog]))
       (is (= (my-du "/a/b")   [:sub]))
-      (is (= (my-du "/a/b/c") [:subsub])))
+      (is (= (my-du "/a/b/c") [:subsub]))
+      (is (= (my-du "/w")     [:sym]))
+      (is (= (my-du "/x/y/z") [:subsym]))
+      (is (= (my-du "/e/f/g") [:mixed])))
     (testing "missing"
       (is (nil? (my-du "/missing")))
       (is (nil? (my-du "/blog/missing"))))

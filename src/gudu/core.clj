@@ -13,7 +13,9 @@
 ;; Given a routing configuration (defined as a collection of segments),
 ;; create the URL pieces from a params collection.
 
-(declare process-string-segment process-map-segment)
+(defn static-segment? [segment] (or (string? segment) (keyword? segment)))
+
+(declare process-static-segment process-map-segment)
 
 (defn process-segments
   ([segments params]
@@ -22,12 +24,12 @@
      (if (empty? segments) ;; check anything else?
        pieces
        (apply (cond
-               (string? segment) process-string-segment
-               (map?    segment) process-map-segment)
+               (static-segment? segment) process-static-segment
+               (map?            segment) process-map-segment)
               [segments params pieces]))))
 
-(defn process-string-segment [[segment & segments] params pieces]
-  (process-segments segments params (conj pieces segment)))
+(defn process-static-segment [[segment & segments] params pieces]
+  (process-segments segments params (conj pieces (name segment))))
 
 (defn process-map-segment [[segment & _] [param & params] pieces]
   (process-segments (segment param) params pieces))
@@ -36,7 +38,7 @@
 ;; Given a routing configuration (defined as a collection of segments),
 ;; create a params collection from the URL pieces.
 
-(declare match-string-segment match-map-segment)
+(declare match-static-segment match-map-segment)
 
 (defn match-segments
   ([segments pieces]
@@ -47,12 +49,12 @@
          params            ;; so, we've found a match
          nil)              ;; unmatched URL pieces, this isn't the route you're looking for
        (apply (cond
-               (string? segment) match-string-segment
-               (map?    segment) match-map-segment)
+               (static-segment? segment) match-static-segment
+               (map?            segment) match-map-segment)
               [segments pieces params]))))
 
-(defn match-string-segment [[segment & segments] [piece & pieces] params]
-  (if (= segment piece)
+(defn match-static-segment [[segment & segments] [piece & pieces] params]
+  (if (= (name segment) piece)
     (match-segments segments pieces params)
     nil))
 
