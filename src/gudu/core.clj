@@ -43,7 +43,7 @@
 
 (defn match-map-segment [[route & routes] segments params]
   ;; NOTE: currently routes is ignore, this implicitly
-  ;; means that any routes after a map are ignored
+  ;; means that any routes after a map segment are ignored
   (let [match (->> route
                    (remap #(match-segments % segments params))
                    (filter (fn [[k v]] ((comp not nil?) v)))
