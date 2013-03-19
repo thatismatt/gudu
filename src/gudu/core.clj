@@ -50,7 +50,8 @@
          nil)              ;; unmatched URL pieces, this isn't the route you're looking for
        (apply (cond
                (static-segment? segment) match-static-segment
-               (map?            segment) match-map-segment)
+               (map?            segment) match-map-segment
+               (throw (Exception. "Invalid route segment")) nil)
               [segments pieces params]))))
 
 (defn match-static-segment [[segment & segments] [piece & pieces] params]
