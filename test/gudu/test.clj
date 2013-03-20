@@ -69,4 +69,8 @@
       (is (= (my-du "/1")   [:a 1]))
       (is (= (my-du "/d")   [:b :d]))
       (is (= (my-du "/1/e") [:b :e 1]))
-      (is (= (my-du "/f/1") [:b :f 1])))))
+      (is (= (my-du "/f/1") [:b :f 1])))
+    (testing "missing"
+      (is (nil? (my-du "/not-int")))
+      (is (nil? (my-du "/not-int/e")))
+      (is (nil? (my-du "/f/not-int"))))))
