@@ -20,14 +20,17 @@
     "## Segment Processing - constructing URL pieces (from params)
      Given a routing configuration (defined as a collection of segments),
      create the URL pieces from a params collection."))
-
-(defn process-static-segment [segment segments params pieces]
-  (process-segments segments params (conj pieces (name segment))))
+;; NOTES: Segment instances are responsible for recursing through the
+;; rest of the pieces/params. match/process should return the params/pieces
+;; created, and nil if there was no match.
 
 (defn match-static-segment [segment segments [piece & pieces] params]
   (if (= (name segment) piece)
     (match-segments segments pieces params)
     nil))
+
+(defn process-static-segment [segment segments params pieces]
+  (process-segments segments params (conj pieces (name segment))))
 
 (extend java.lang.String
   Segment
