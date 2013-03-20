@@ -2,26 +2,28 @@
 
 * DONE Allow keywords for defining static route segments (as well as strings)
 * TODO Wrappers/Decorators that convert (and simplify) input to gu & output from du
-  e.g.:
+  - e.g.:
     [:a :b] = :a-b
     [:a :b] = :b
+  - Questions:
+    1. Implement as middleware?
 * TODO Functions to walk routes
 ** Rewrite gu/du to use new walk functions
 * TODO Change usage of cond for different segment types to use a protocol
 * TODO New segment types
-** string
-** int
-** regex
-** static choice (i.e. set of strings)
-** catch all/multi segment (e.g. wiki)
-* TODO Helper functions to map routes to handlers
+** TODO string
+** TODO int
+** TODO regex
+** TODO static choice (i.e. set of strings)
+** TODO catch all/multi segment (e.g. wiki)
+* DONE Helper functions to map routes to handlers
 * TODO Add some way to specify the default handlers (e.g. 404, 500)
 * TODO Generate navigation (as hiccup?) from routes
 * TODO Generate breadcrumb based on current URL
 * TODO Change routes at runtime
   Note: what does this mean for gu, i.e. can you generate routes for other route configurations?
 * TODO Route debugging
-* TODO Route Linter
+* TODO Route linter
   Rules:
 ** Nothing after map
 ** No duplicate/overlapping segment URLs
@@ -30,3 +32,5 @@
    Note: overlapping segments (but not entire URL) is ok.
    e.g. { :z ["x" "y" "z"], :a ["x" "y" "z" "a"], :b ["x" "y" "z" "b"] }
 ** Top level route must be a map
+* TODO Generate docs
+* TODO Publish docs (gh-pages)
