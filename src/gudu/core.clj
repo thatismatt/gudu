@@ -81,7 +81,16 @@
           (match-segments segments pieces (conj params int-val)))))
     (process [_ segments [param & params] pieces]
       ;; TODO - verify param is actually an integer
-      (process-segments segments pieces (conj pieces param)))))
+      (process-segments segments params (conj pieces param)))))
+
+(def string-segment
+  "A segment that matches any string."
+  (reify Segment
+    (match [_ segments [piece & pieces] params]
+      (match-segments segments pieces (conj params piece)))
+    (process [_ segments [param & params] pieces]
+      ;; TODO - verify param is actually a string
+      (process-segments segments params (conj pieces param)))))
 
 (defn split-url [url]
   "Create a collection of URL pieces from a URL."
