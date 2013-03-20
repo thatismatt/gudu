@@ -9,63 +9,67 @@
 ;;  "segment" - A definition for the URL pieces that can be matched at a particular point in a route
 ;;      There are different types of segments, e.g. string and map.
 
-;; ## Segment Processing - constructing URL pieces (from params)
-;; Given a routing configuration (defined as a collection of segments),
-;; create the URL pieces from a params collection.
+(declare match-segments process-segments)
 
-(defn static-segment? [segment] (or (string? segment) (keyword? segment)))
+(defprotocol Segment
+  (match [segment segments pieces params]
+    "## Segment Matching - creating params (from URL pieces)
+     Given a routing configuration (defined as a collection of segments),
+     create a params collection from the URL pieces.")
+  (process [segment segments params pieces]
+    "## Segment Processing - constructing URL pieces (from params)
+     Given a routing configuration (defined as a collection of segments),
+     create the URL pieces from a params collection."))
 
-(declare process-static-segment process-map-segment)
-
-(defn process-segments
-  ([segments params]
-     (process-segments segments params []))
-  ([[segment & _ :as segments] params pieces]
-     (if (empty? segments) ;; check anything else?
-       pieces
-       (apply (cond
-               (static-segment? segment) process-static-segment
-               (map?            segment) process-map-segment)
-              [segments params pieces]))))
-
-(defn process-static-segment [[segment & segments] params pieces]
+(defn process-static-segment [segment segments params pieces]
   (process-segments segments params (conj pieces (name segment))))
 
-(defn process-map-segment [[segment & _] [param & params] pieces]
-  (process-segments (segment param) params pieces))
-
-;; ## Segment Matching - creating params (from URL pieces)
-;; Given a routing configuration (defined as a collection of segments),
-;; create a params collection from the URL pieces.
-
-(declare match-static-segment match-map-segment)
-
-(defn match-segments
-  ([segments pieces]
-     (match-segments segments pieces []))
-  ([[segment & _ :as segments] pieces params]
-     (if (empty? segments) ;; no more routes to match against
-       (if (empty? pieces) ;; no more URL pieces to be matched
-         params            ;; so, we've found a match
-         nil)              ;; unmatched URL pieces, this isn't the route you're looking for
-       (apply (cond
-               (static-segment? segment) match-static-segment
-               (map?            segment) match-map-segment
-               (throw (Exception. "Invalid route segment")) nil)
-              [segments pieces params]))))
-
-(defn match-static-segment [[segment & segments] [piece & pieces] params]
+(defn match-static-segment [segment segments [piece & pieces] params]
   (if (= (name segment) piece)
     (match-segments segments pieces params)
     nil))
 
-(defn match-map-segment [[segment & _] pieces params]
-  ;; NOTE: segments after a map segment are ignore
-  (let [match (->> segment
-                   (remap #(match-segments % pieces params))
-                   (filter (fn [[k v]] ((comp not nil?) v)))
-                   first)]
-    (and match (apply cons match))))
+(extend java.lang.String
+  Segment
+  {:match match-static-segment
+   :process process-static-segment})
+
+(extend clojure.lang.Keyword
+  Segment
+  {:match match-static-segment
+   :process process-static-segment})
+
+(extend clojure.lang.IPersistentMap
+  Segment
+  {:match
+   (fn [segment _ pieces params]
+     ;; NOTE: segments after a map segment are ignored
+     (let [matches (->> segment
+                        (remap #(match-segments % pieces params))
+                        (filter (fn [[k v]] ((comp not nil?) v)))
+                        first)]
+       (and matches (apply cons matches))))
+   :process
+   (fn [segment _ [param & params] pieces]
+     (process-segments (segment param) params pieces))})
+
+(defn process-segments
+  ([segments params]
+     (process-segments segments params []))
+  ([[segment & segments :as all-segments] params pieces]
+     (if (empty? all-segments) ;; check anything else?
+       pieces
+       (process segment segments params pieces))))
+
+(defn match-segments
+  ([segments pieces]
+     (match-segments segments pieces []))
+  ([[segment & segments :as all-segments] pieces params]
+     (if (empty? all-segments) ;; no more routes to match against
+       (if (empty? pieces)     ;; no more URL pieces to be matched
+         params                ;; so, we've found a match
+         nil)                  ;; unmatched URL pieces, this isn't the route you're looking for
+       (match segment segments pieces params))))
 
 (defn split-url [url]
   (filter (comp not empty?) ;; ignore leading & multiple slashes
