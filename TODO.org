@@ -12,7 +12,7 @@
 * DONE Change usage of cond for different segment types to use a protocol
 * TODO New segment types
 ** TODO string
-** TODO int
+** DONE int
 ** TODO regex
 ** TODO static choice (i.e. set of strings)
 ** TODO catch all/multi segment (e.g. wiki)
