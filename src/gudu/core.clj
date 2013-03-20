@@ -73,6 +73,7 @@
      (process-segments (segment param) params pieces))})
 
 (def int-segment
+  "A segment that matches integers."
   (reify Segment
     (match [_ segments [piece & pieces] params]
       (if-let [int-str (re-find #"^[0-9]+$" piece)]
@@ -83,8 +84,10 @@
       (process-segments segments pieces (conj pieces param)))))
 
 (defn split-url [url]
+  "Create a collection of URL pieces from a URL."
   (filter (comp not empty?) ;; ignore leading & multiple slashes
           (str/split url #"/")))
 
 (defn join-pieces [pieces]
+  "Create a URL from a collection of URL pieces."
   (str "/" (str/join "/" pieces)))
