@@ -10,3 +10,5 @@
   "Degenerate URL"
   [routes]
   (fn [url] (c/match-segments [routes] (c/split-url url))))
+
+(def int-segment c/int-segment)

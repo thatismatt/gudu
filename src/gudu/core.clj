@@ -72,6 +72,16 @@
    (fn [segment _ [param & params] pieces]
      (process-segments (segment param) params pieces))})
 
+(def int-segment
+  (reify Segment
+    (match [_ segments [piece & pieces] params]
+      (if-let [int-str (re-find #"^[0-9]+$" piece)]
+        (let [int-val (Integer/valueOf int-str)]
+          (match-segments segments pieces (conj params int-val)))))
+    (process [_ segments [param & params] pieces]
+      ;; TODO - verify param is actually an integer
+      (process-segments segments pieces (conj pieces param)))))
+
 (defn split-url [url]
   (filter (comp not empty?) ;; ignore leading & multiple slashes
           (str/split url #"/")))

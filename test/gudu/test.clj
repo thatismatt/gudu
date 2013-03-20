@@ -50,3 +50,23 @@
       (is (= (my-du "/")             [:home]))
       (is (= (my-du "/blog")         [:blog :current]))
       (is (= (my-du "/blog/archive") [:blog :archive])))))
+
+(deftest test-int-segments
+  (let [int-routes {:a [int-segment]
+                    :b [{:c [int-segment]
+                         :d ["d"]
+                         :e [int-segment "e"]
+                         :f ["f" int-segment]}]}
+        my-gu (gu int-routes)
+        my-du (du int-routes)]
+    (testing "gu"
+      (is (= (my-gu :a 1)    "/1"))
+      (is (= (my-gu :b :c 1) "/1"))
+      (is (= (my-gu :b :d)   "/d"))
+      (is (= (my-gu :b :e 1) "/1/e"))
+      (is (= (my-gu :b :f 1) "/f/1")))
+    (testing "du"
+      (is (= (my-du "/1")   [:a 1]))
+      (is (= (my-du "/d")   [:b :d]))
+      (is (= (my-du "/1/e") [:b :e 1]))
+      (is (= (my-du "/f/1") [:b :f 1])))))
