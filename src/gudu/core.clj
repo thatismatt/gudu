@@ -56,14 +56,6 @@
    (fn [segment _ [param & params] pieces]
      (process-segments (segment param) params pieces))})
 
-(defn process-segments
-  ([segments params]
-     (process-segments segments params []))
-  ([[segment & segments :as all-segments] params pieces]
-     (if (empty? all-segments) ;; check anything else?
-       pieces
-       (process segment segments params pieces))))
-
 (defn match-segments
   ([segments pieces]
      (match-segments segments pieces []))
@@ -73,6 +65,14 @@
          params                ;; so, we've found a match
          nil)                  ;; unmatched URL pieces, this isn't the route you're looking for
        (match segment segments pieces params))))
+
+(defn process-segments
+  ([segments params]
+     (process-segments segments params []))
+  ([[segment & segments :as all-segments] params pieces]
+     (if (empty? all-segments) ;; check anything else?
+       pieces
+       (process segment segments params pieces))))
 
 (defn split-url [url]
   (filter (comp not empty?) ;; ignore leading & multiple slashes
