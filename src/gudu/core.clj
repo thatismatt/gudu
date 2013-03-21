@@ -97,6 +97,6 @@
   (filter (comp not empty?) ;; ignore leading & multiple slashes
           (str/split url #"/")))
 
-(defn join-pieces [pieces]
+(defn join-pieces [pieces context]
   "Create a URL from a collection of URL pieces."
-  (str "/" (str/join "/" pieces)))
+  (str context (if-not (= \/ (last context)) "/") (str/join "/" pieces)))

@@ -3,8 +3,8 @@
 
 (defn gu
   "Generate URL"
-  [routes]
-  (fn [& params] (c/join-pieces (c/process-segments [routes] params))))
+  [routes & {:keys [context] :or {context "/"}}]
+  (fn [& params] (c/join-pieces (c/process-segments [routes] params) context)))
 
 (defn du
   "Degenerate URL"
