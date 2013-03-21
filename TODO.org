@@ -1,6 +1,7 @@
 #+TITLE: gudu todos
 
 * DONE Allow keywords for defining static route segments (as well as strings)
+* TODO Handle being inside a servlet container (i.e. handle non root context)
 * TODO Wrappers/Decorators that convert (and simplify) input to gu & output from du
   - e.g.:
     [:a :b] = :a-b
@@ -16,6 +17,9 @@
 ** TODO regex
 ** TODO static choice (i.e. set of strings)
 ** TODO catch all/multi segment (e.g. wiki)
+** TODO custom/user defined
+** TODO date segments (example of custom?)
+   Consume 3 segments e.g. /2013/03/21 but only return one param (map or Java Date?)
 * DONE Helper functions to map routes to handlers
 * TODO Add some way to specify the default handlers (e.g. 404, 500)
 * TODO Generate navigation (as hiccup?) from routes
@@ -32,5 +36,11 @@
    Note: overlapping segments (but not entire URL) is ok.
    e.g. { :z ["x" "y" "z"], :a ["x" "y" "z" "a"], :b ["x" "y" "z" "b"] }
 ** Top level route must be a map
-* TODO Generate docs
-* TODO Publish docs (gh-pages)
+* TODO Documentation
+** TODO Generate docs (marginalia or codox)
+** TODO Publish docs (gh-pages)
+* TODO Examples:
+** Blog (using date segments)
+** Wiki (using multi segment)
+** Database backed (custom segment that 404s if id not in database)
+** git browser (using custom segment that can do partial matches)
