@@ -1,7 +1,7 @@
 #+TITLE: gudu todos
 
 * DONE Allow keywords for defining static route segments (as well as strings)
-* TODO Handle being inside a servlet container (i.e. handle non root context)
+* DONE Handle being inside a servlet container (i.e. handle non root context)
 * TODO Wrappers/Decorators that convert (and simplify) input to gu & output from du
   - e.g.:
     [:a :b] = :a-b
@@ -12,7 +12,7 @@
 ** Rewrite gu/du to use new walk functions
 * DONE Change usage of cond for different segment types to use a protocol
 * TODO New segment types
-** TODO string
+** DONE string
 ** DONE int
 ** TODO regex
 ** TODO static choice (i.e. set of strings)
