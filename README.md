@@ -6,7 +6,7 @@ A routing and URL generation library that tries to obey the notion of code as da
 
 Rather than routing based on macros or function that are impenetrable at runtime,
 a data structure is defined that describes the routes. This can then be inspected at
-runtime to route and request and construct URLs.
+runtime to route a request and construct URLs.
 
 ## Usage
 
@@ -22,6 +22,10 @@ runtime to route and request and construct URLs.
     (du "/")     ;; => :home
     (gu :blog)   ;; => "/blog"
     (du "/blog") ;; => :blog
+
+## Example
+
+See the [gudu-example](https://github.com/thatismatt/gudu-example) project, in particular take a look at [example.clj](https://github.com/thatismatt/gudu-example/blob/master/src/gudu_example/core.clj).
 
 ## License
 
