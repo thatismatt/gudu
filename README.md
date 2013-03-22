@@ -25,7 +25,7 @@ runtime to route a request and construct URLs.
 
 ## Examples
 
-See the [gudu-examples](https://github.com/thatismatt/gudu-examples) project, in particular take a look at [example.clj](https://github.com/thatismatt/gudu-examples/blob/master/src/gudu_examples/blog.clj).
+See the [gudu-examples](https://github.com/thatismatt/gudu-examples) project, in particular take a look at [blog.clj](https://github.com/thatismatt/gudu-examples/blob/master/src/gudu_examples/blog.clj).
 
 ## License
 
