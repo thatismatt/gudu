@@ -11,3 +11,14 @@
             route   (my-du url)
             new-req (assoc req :route route)]
         (handler new-req)))))
+
+(defn router [handler-fn default-handler]
+  "Obtains the route from the :route entry of the request,
+   picks a handler using handler-fn,
+   defaults to default-handler (which normally generates a 404)"
+  (fn [req]
+    (let [route   (:route req)
+          handler (handler-fn route)]
+      (or (and handler
+               (handler req))
+          (default-handler req)))))
