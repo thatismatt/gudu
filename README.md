@@ -1,6 +1,6 @@
 # gudu
 
-"Generate URL, Degenerate URL"
+*"Generate URL, Degenerate URL"*
 
 A routing and URL generation library that tries to obey the notion of code as data.
 
@@ -12,16 +12,20 @@ runtime to route a request and construct URLs.
 
     (require 'gudu)
 
-    (def my-routes {:home []
-                    :blog ["blog"])
+    (def my-routes
+      {:home []
+       :blog ["blog" {:latest []
+                      :post   [gudu/string-segment]}]})
 
     (def gu (gudu/gu my-routes))
     (def du (gudu/du my-routes))
 
     (gu :home)   ;; => "/"
-    (du "/")     ;; => :home
+    (du "/")     ;; => (:home)
     (gu :blog)   ;; => "/blog"
-    (du "/blog") ;; => :blog
+    (du "/blog") ;; => (:blog :latest)
+    (gu :blog :post "great-post") ;; => "/blog/great-post"
+    (du "/blog/another-post")     ;; => (:blog :post "another-post")
 
 ## Examples
 
