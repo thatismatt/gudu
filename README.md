@@ -23,9 +23,9 @@ runtime to route a request and construct URLs.
     (gu :blog)   ;; => "/blog"
     (du "/blog") ;; => :blog
 
-## Example
+## Examples
 
-See the [gudu-example](https://github.com/thatismatt/gudu-example) project, in particular take a look at [example.clj](https://github.com/thatismatt/gudu-example/blob/master/src/gudu_example/core.clj).
+See the [gudu-examples](https://github.com/thatismatt/gudu-examples) project, in particular take a look at [example.clj](https://github.com/thatismatt/gudu-examples/blob/master/src/gudu_examples/blog.clj).
 
 ## License
 
