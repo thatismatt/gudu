@@ -2,30 +2,39 @@
 
 *"Generate URL, Degenerate URL"*
 
-A routing and URL generation library that tries to obey the notion of code as data.
+A bi-directional routing and URL generation library, where routes are configured as simple clojure data structures.
 
-Rather than routing based on macros or function that are impenetrable at runtime,
-a data structure is defined that describes the routes. This can then be inspected at
-runtime to route a request and construct URLs.
+Routes are defined as a data structure that is used at runtime to route requests and construct URLs. As the routes are just a data structure they can be easily inspected by other functions to produce related data, e.g. navigation, breadcrumbs.
 
 ## Usage
 
     (require 'gudu)
+    (require 'gudu.middleware)
 
     (def my-routes
       {:home []
        :blog ["blog" {:latest []
                       :post   [gudu/string-segment]}]})
 
+    ;; URL Generation
     (def gu (gudu/gu my-routes))
-    (def du (gudu/du my-routes))
 
     (gu :home)   ;; => "/"
-    (du "/")     ;; => (:home)
     (gu :blog)   ;; => "/blog"
-    (du "/blog") ;; => (:blog :latest)
     (gu :blog :post "great-post") ;; => "/blog/great-post"
+
+    ;; URL Degeneration
+    (def du (gudu/du my-routes))
+
+    (du "/")     ;; => (:home)
+    (du "/blog") ;; => (:blog :latest)
     (du "/blog/another-post")     ;; => (:blog :post "another-post")
+
+    ;; du is normally access indirectly via the gudu ring middleware
+    (defn get-handler [routes] ... return handler function based on route ...)
+    (def app
+      (-> (gudu.middleware/router get-handler my-routes)
+          (gudu.middleware/wrap-route my-routes)))
 
 ## Examples
 
