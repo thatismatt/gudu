@@ -75,16 +75,19 @@
       (is (nil? (my-du "/f/not-int"))))))
 
 (deftest test-string-segments
-  (let [string-routes {:a string-segment
+  (let [string-routes {:r root
+                       :a string-segment
                        :b {:e [string-segment "e"]
                            :f ["f" string-segment]}}
         my-gu (gu string-routes)
         my-du (du string-routes)]
     (testing "gu"
+      (is (= (my-gu :r)           "/"))
       (is (= (my-gu :a "matt")    "/matt"))
       (is (= (my-gu :b :e "matt") "/matt/e"))
       (is (= (my-gu :b :f "matt") "/f/matt")))
     (testing "du"
+      (is (= (my-du "/")       [:r]))
       (is (= (my-du "/matt")   [:a "matt"]))
       (is (= (my-du "/matt/e") [:b :e "matt"]))
       (is (= (my-du "/f/matt") [:b :f "matt"])))))

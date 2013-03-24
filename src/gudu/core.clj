@@ -103,7 +103,8 @@
   "A segment that matches any string."
   (reify Segment
     (match [_ [piece & pieces]]
-      [pieces [piece]])
+      (if piece
+        [pieces [piece]]))
     (process [_ [param & params]]
       [params [param]])))
 
