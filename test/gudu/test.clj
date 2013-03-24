@@ -1,13 +1,14 @@
 (ns gudu.test
   (:use clojure.test
-        gudu))
+        gudu
+        gudu.core))
 
 (deftest test-static-routes
-  (let [static-routes {:home   []
-                       :blog   ["blog"]
+  (let [static-routes {:home   root
+                       :blog   "blog"
                        :sub    ["a" "b"]
                        :subsub ["a" "b" "c"]
-                       :sym    [:w]
+                       :sym    :w
                        :subsym [:x :y :z]
                        :mixed  [:e "f" :g]}
         my-gu (gu static-routes)
@@ -36,9 +37,9 @@
       (is (= (my-du "/a/b/")  [:sub])))))
 
 (deftest test-sub-routes
-  (let [blog-routes {:current []
-                     :archive ["archive"]}
-        sub-routes  {:home    []
+  (let [blog-routes {:current root
+                     :archive "archive"}
+        sub-routes  {:home    root
                      :blog    ["blog" blog-routes]}
         my-gu (gu sub-routes)
         my-du (du sub-routes)]
@@ -52,16 +53,14 @@
       (is (= (my-du "/blog/archive") [:blog :archive])))))
 
 (deftest test-int-segments
-  (let [int-routes {:a [int-segment]
-                    :b [{:c [int-segment]
-                         :d ["d"]
-                         :e [int-segment "e"]
-                         :f ["f" int-segment]}]}
+  (let [int-routes {:a int-segment
+                    :b {:d "d"
+                        :e [int-segment "e"]
+                        :f ["f" int-segment]}}
         my-gu (gu int-routes)
         my-du (du int-routes)]
     (testing "gu"
       (is (= (my-gu :a 1)    "/1"))
-      (is (= (my-gu :b :c 1) "/1"))
       (is (= (my-gu :b :d)   "/d"))
       (is (= (my-gu :b :e 1) "/1/e"))
       (is (= (my-gu :b :f 1) "/f/1")))
@@ -76,21 +75,16 @@
       (is (nil? (my-du "/f/not-int"))))))
 
 (deftest test-string-segments
-  (let [string-routes {:a [string-segment]
-                       :b [{:c [string-segment]
-                            :d ["d"]
-                            :e [string-segment "e"]
-                            :f ["f" string-segment]}]}
+  (let [string-routes {:a string-segment
+                       :b {:e [string-segment "e"]
+                           :f ["f" string-segment]}}
         my-gu (gu string-routes)
         my-du (du string-routes)]
     (testing "gu"
       (is (= (my-gu :a "matt")    "/matt"))
-      (is (= (my-gu :b :c "matt") "/matt"))
-      (is (= (my-gu :b :d)        "/d"))
       (is (= (my-gu :b :e "matt") "/matt/e"))
       (is (= (my-gu :b :f "matt") "/f/matt")))
     (testing "du"
       (is (= (my-du "/matt")   [:a "matt"]))
-      (is (= (my-du "/d")      [:a "d"]))
       (is (= (my-du "/matt/e") [:b :e "matt"]))
       (is (= (my-du "/f/matt") [:b :f "matt"])))))
