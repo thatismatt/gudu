@@ -2,7 +2,10 @@
 
 * DONE Allow keywords for defining static route segments (as well as strings)
 * DONE Handle being inside a servlet container (i.e. handle non root context)
-* TODO Pass context through from gu/du to anonymous functions, allow it to be overridden.
+* TODO Move segments to gudu.segment
+* TODO Router that auto maps: /<namespace>/<function>/<args> => (apply namespace/function args)
+  Notes: see find-ns, find-var, symbol
+* TODO Pass context through from gu/du to anonymous functions, allow it to be overridden
 * TODO Wrappers/Decorators that convert (and simplify) input to gu & output from du
   - e.g.:
     [:a :b] = :a-b
