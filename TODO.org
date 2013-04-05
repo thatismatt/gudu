@@ -13,7 +13,6 @@
   - Questions:
     1. Implement as middleware?
 * TODO Functions to walk routes
-** Rewrite gu/du to use new walk functions
 * DONE Change usage of cond for different segment types to use a protocol
 * TODO New segment types
 ** DONE string
