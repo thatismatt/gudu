@@ -39,6 +39,7 @@
    Note: overlapping segments (but not entire URL) is ok.
    e.g. { :z ["x" "y" "z"], :a ["x" "y" "z" "a"], :b ["x" "y" "z" "b"] }
 ** Top level route must be a map
+* TODO Make routes available client side
 * TODO Documentation
 ** TODO Generate docs (marginalia or codox)
 ** TODO Publish docs (gh-pages)
