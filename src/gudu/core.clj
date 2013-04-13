@@ -3,25 +3,30 @@
   (:use [gudu.utils]))
 
 ;; ## Vocabulary
-;;  "pieces" - The collection of strings created when a URL is split at the '/' character
-;;      e.g. URL: /foo/bar/baz => pieces: ["foo" "bar" "baz"]
-;;  "params" - A collection that can be used to create URL pieces given a routing configuration
-;;  "segment" - A definition for the URL pieces that can be matched at a particular point in a route
+;;  "pieces"  - The collection of strings created when a URL is split at the '/' character
+;;         e.g. URL: /foo/bar/baz => pieces: ["foo" "bar" "baz"]
+;;  "params"  - A collection that can be used to create URL pieces given a routing configuration
+;;  "segment" -
+;;
 
 (defprotocol Segment
+  "A segment defines the way to map between pieces and params.
+   A routing configuration is defined as segments."
   (match [segment pieces]
-    "## Segment Matching - creating params (from URL pieces)
+    "# Segment Matching - creating params (from URL pieces)
+
      Given a routing configuration (defined as a top level segment),
      create a params collection from the URL pieces.")
   (process [segment params]
-    "## Segment Processing - constructing URL pieces (from params)
+    "# Segment Processing - constructing URL pieces (from params)
+
      Given a routing configuration (defined as a top level segment),
      create the URL pieces from a params collection."))
 
 (defn match-segments
   [segment pieces]
   (if-let [[pieces params] (match segment pieces)]
-    (if-not (seq pieces) ;; no more URL pieces to be matched
+    (if-not (seq pieces) ;; no more URL pieces to match
       params)))
 
 (defn process-segments
@@ -30,11 +35,11 @@
     (if-not (seq params) ;; params have all been consumed
       pieces)))
 
-(defn match-static-segment [segment [piece & pieces]]
+(defn- match-static-segment [segment [piece & pieces]]
   (if (= (name segment) piece)
     [pieces []]))
 
-(defn process-static-segment [segment params]
+(defn- process-static-segment [segment params]
   [params [(name segment)]])
 
 (extend java.lang.String
@@ -109,17 +114,20 @@
       [params [param]])))
 
 (def root
+  "A segment that matches the root URL."
   (reify Segment
     (match [segment pieces]
       (if (empty? pieces) []))
     (process [segment params]
       (if (empty? params) []))))
 
-(defn split-url [url]
+(defn split-url
   "Create a collection of URL pieces from a URL."
+  [url]
   (filter (comp not empty?) ;; ignore leading & multiple slashes
           (str/split url #"/")))
 
-(defn join-pieces [pieces context]
+(defn join-pieces
   "Create a URL from a collection of URL pieces."
+  [pieces context]
   (str context (if-not (= \/ (last context)) "/") (str/join "/" pieces)))
