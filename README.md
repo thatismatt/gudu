@@ -9,12 +9,13 @@ Routes are defined as a data structure that is used at runtime to route requests
 ## Usage
 
     (require 'gudu)
+    (require 'gudu.core)
     (require 'gudu.middleware)
 
     (def my-routes
-      {:home []
-       :blog ["blog" {:latest []
-                      :post   [gudu/string-segment]}]})
+      {:home gudu.core/root
+       :blog ["blog" {:latest gudu.core/root
+                      :post   [gudu.core/string-segment]}]})
 
     ;; URL Generation
     (def gu (gudu/gu my-routes))
@@ -30,7 +31,7 @@ Routes are defined as a data structure that is used at runtime to route requests
     (du "/blog") ;; => (:blog :latest)
     (du "/blog/another-post")     ;; => (:blog :post "another-post")
 
-    ;; du is normally access indirectly via the gudu ring middleware
+    ;; du is normally accessed indirectly via the gudu ring middleware
     (defn get-handler [routes] ... return handler function based on route ...)
     (def app
       (-> (gudu.middleware/router get-handler my-routes)
