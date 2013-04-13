@@ -9,4 +9,5 @@
                    :all (constantly true)}
   :codox {:exclude gudu.utils
           :src-dir-uri "http://github.com/thatismatt/gudu/blob/master"
-          :src-linenum-anchor-prefix "L"})
+          :src-linenum-anchor-prefix "L"
+          :output-dir "site/doc"})
