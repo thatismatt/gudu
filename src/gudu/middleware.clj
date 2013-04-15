@@ -1,5 +1,5 @@
 (ns gudu.middleware
-  (:use [gudu]))
+  (:use gudu))
 
 (defn wrap-route
   "Ring middleware that adds a :route key to the request."
