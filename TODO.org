@@ -32,17 +32,15 @@
 * TODO Route debugging
 * TODO Route linter
   Rules:
-** Nothing after map
 ** No duplicate/overlapping segment URLs
    e.g. { :a ["a"], :a2 ["a"] }
         { :s [string-seg], :i [int-seg] }
    Note: overlapping segments (but not entire URL) is ok.
    e.g. { :z ["x" "y" "z"], :a ["x" "y" "z" "a"], :b ["x" "y" "z" "b"] }
-** Top level route must be a map
-* TODO Make routes available client side
-* TODO Documentation
-** TODO Generate docs (marginalia or codox)
-** TODO Publish docs (gh-pages)
+* TODO Client side routes generation
+* DONE Documentation
+** DONE Generate docs (marginalia or codox)
+** DONE Publish docs (gh-pages)
 * TODO Examples:
 ** Blog (using date segments)
 ** Wiki (using multi segment)
