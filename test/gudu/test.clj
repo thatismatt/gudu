@@ -1,10 +1,11 @@
 (ns gudu.test
   (:use clojure.test
         gudu
-        gudu.core))
+        gudu.core
+        [gudu.segment :as segment]))
 
 (deftest test-static-routes
-  (let [static-routes {:home   root
+  (let [static-routes {:home   segment/root
                        :blog   "blog"
                        :sub    ["a" "b"]
                        :subsub ["a" "b" "c"]
@@ -37,9 +38,9 @@
       (is (= (my-du "/a/b/")  [:sub])))))
 
 (deftest test-sub-routes
-  (let [blog-routes {:current root
+  (let [blog-routes {:current segment/root
                      :archive "archive"}
-        sub-routes  {:home    root
+        sub-routes  {:home    segment/root
                      :blog    ["blog" blog-routes]}
         my-gu (gu sub-routes)
         my-du (du sub-routes)]
@@ -53,10 +54,10 @@
       (is (= (my-du "/blog/archive") [:blog :archive])))))
 
 (deftest test-int-segments
-  (let [int-routes {:a int-segment
+  (let [int-routes {:a segment/int
                     :b {:d "d"
-                        :e [int-segment "e"]
-                        :f ["f" int-segment]}}
+                        :e [segment/int "e"]
+                        :f ["f" segment/int]}}
         my-gu (gu int-routes)
         my-du (du int-routes)]
     (testing "gu"
@@ -75,10 +76,10 @@
       (is (nil? (my-du "/f/not-int"))))))
 
 (deftest test-string-segments
-  (let [string-routes {:r root
-                       :a string-segment
-                       :b {:e [string-segment "e"]
-                           :f ["f" string-segment]}}
+  (let [string-routes {:r segment/root
+                       :a segment/string
+                       :b {:e [segment/string "e"]
+                           :f ["f" segment/string]}}
         my-gu (gu string-routes)
         my-du (du string-routes)]
     (testing "gu"
