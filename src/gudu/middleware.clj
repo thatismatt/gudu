@@ -18,8 +18,6 @@
    defaults to default-handler (which normally generates a 404)"
   [handler-fn default-handler]
   (fn [req]
-    (let [route   (:route req)
-          handler (handler-fn route)]
-      (or (and handler
-               (handler req))
-          (default-handler req)))))
+    (if-let [handler (some-> req :route handler-fn)]
+      (handler req)
+      (default-handler req))))
