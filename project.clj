@@ -7,7 +7,6 @@
   :plugins [[lein-codox "0.10.8"]]
   :test-selectors {:default (complement :ignore)
                    :all     (constantly true)}
-  :codox {:exclude                   gudu.utils
-          :src-dir-uri               "http://github.com/thatismatt/gudu/blob/master"
-          :src-linenum-anchor-prefix "L"
-          :output-dir                "site/doc"})
+  :codox {:namespaces  [#"^gudu\."]
+          :source-uri  "https://github.com/thatismatt/gudu/blob/{version}/{filepath}#L{line}"
+          :output-path "doc"})
