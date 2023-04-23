@@ -1,34 +1,33 @@
-(ns gudu.test
-  (:use clojure.test
-        gudu
-        gudu.core
-        [gudu.segment :as segment]))
+(ns gudu.core-test
+  (:require [clojure.test :refer [deftest testing is]]
+            [gudu.core :as gd]
+            [gudu.segment :as gds]))
 
-(deftest test-static-routes
-  (let [static-routes {:home   segment/root
+(deftest test-static-routesgds
+  (let [static-routes {:home   gds/root
                        :blog   "blog"
                        :sub    ["a" "b"]
                        :subsub ["a" "b" "c"]
-                       :sym    :w
-                       :subsym [:x :y :z]
+                       :kw     :w
+                       :subkw  [:x :y :z]
                        :mixed  [:e "f" :g]}
-        my-gu (gu static-routes)
-        my-du (du static-routes)]
+        my-gu         (gd/gu static-routes)
+        my-du         (gd/du static-routes)]
     (testing "gu"
       (is (= (my-gu :home)   "/"))
       (is (= (my-gu :blog)   "/blog"))
       (is (= (my-gu :sub)    "/a/b"))
       (is (= (my-gu :subsub) "/a/b/c"))
-      (is (= (my-gu :sym)    "/w"))
-      (is (= (my-gu :subsym) "/x/y/z"))
+      (is (= (my-gu :kw)     "/w"))
+      (is (= (my-gu :subkw)  "/x/y/z"))
       (is (= (my-gu :mixed)  "/e/f/g")))
     (testing "du"
       (is (= (my-du "/")      [:home]))
       (is (= (my-du "/blog")  [:blog]))
       (is (= (my-du "/a/b")   [:sub]))
       (is (= (my-du "/a/b/c") [:subsub]))
-      (is (= (my-du "/w")     [:sym]))
-      (is (= (my-du "/x/y/z") [:subsym]))
+      (is (= (my-du "/w")     [:kw]))
+      (is (= (my-du "/x/y/z") [:subkw]))
       (is (= (my-du "/e/f/g") [:mixed])))
     (testing "missing"
       (is (nil? (my-du "/missing")))
@@ -38,12 +37,12 @@
       (is (= (my-du "/a/b/")  [:sub])))))
 
 (deftest test-sub-routes
-  (let [blog-routes {:current segment/root
+  (let [blog-routes {:current gds/root
                      :archive "archive"}
-        sub-routes  {:home    segment/root
+        sub-routes  {:home    gds/root
                      :blog    ["blog" blog-routes]}
-        my-gu (gu sub-routes)
-        my-du (du sub-routes)]
+        my-gu (gd/gu sub-routes)
+        my-du (gd/du sub-routes)]
     (testing "gu"
       (is (= (my-gu :blog)          "/blog"))
       (is (= (my-gu :blog :current) "/blog"))
@@ -54,12 +53,12 @@
       (is (= (my-du "/blog/archive") [:blog :archive])))))
 
 (deftest test-int-segments
-  (let [int-routes {:a segment/int
+  (let [int-routes {:a gds/int
                     :b {:d "d"
-                        :e [segment/int "e"]
-                        :f ["f" segment/int]}}
-        my-gu (gu int-routes)
-        my-du (du int-routes)]
+                        :e [gds/int "e"]
+                        :f ["f" gds/int]}}
+        my-gu (gd/gu int-routes)
+        my-du (gd/du int-routes)]
     (testing "gu"
       (is (= (my-gu :a 1)    "/1"))
       (is (= (my-gu :b :d)   "/d"))
@@ -76,12 +75,12 @@
       (is (nil? (my-du "/f/not-int"))))))
 
 (deftest test-string-segments
-  (let [string-routes {:r segment/root
-                       :a segment/string
-                       :b {:e [segment/string "e"]
-                           :f ["f" segment/string]}}
-        my-gu (gu string-routes)
-        my-du (du string-routes)]
+  (let [string-routes {:r gds/root
+                       :a gds/string
+                       :b {:e [gds/string "e"]
+                           :f ["f" gds/string]}}
+        my-gu (gd/gu string-routes)
+        my-du (gd/du string-routes)]
     (testing "gu"
       (is (= (my-gu :r)           "/"))
       (is (= (my-gu :a "matt")    "/matt"))

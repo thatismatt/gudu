@@ -1,10 +1,10 @@
 (ns gudu.middleware
-  (:use gudu))
+  (:require [gudu.core :as gd]))
 
 (defn wrap-route
   "Ring middleware that adds a :route key to the request."
   [handler routes]
-  (let [my-du (du routes)]
+  (let [my-du (gd/du routes)]
     (fn [req]
       (let [url     (or (:path-info req)
                         (:uri req))

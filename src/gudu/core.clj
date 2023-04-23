@@ -1,18 +1,17 @@
 (ns gudu.core
-  (:require [clojure.string :as str])
-  (:use gudu.utils
-        gudu.segment))
+  (:require [clojure.string :as str]
+            [gudu.segment :as gds]))
 
 (defn match-segments
   [segment pieces]
-  (if-let [[pieces params] (match segment pieces)]
-    (if-not (seq pieces) ;; no more URL pieces to match
+  (when-let [[pieces params] (gds/match segment pieces)]
+    (when-not (seq pieces) ;; no more URL pieces to match
       params)))
 
 (defn process-segments
   [segment params]
-  (let [[params pieces] (process segment params)]
-    (if-not (seq params) ;; params have all been consumed
+  (let [[params pieces] (gds/process segment params)]
+    (when-not (seq params) ;; params have all been consumed
       pieces)))
 
 (defn split-url
@@ -24,4 +23,14 @@
 (defn join-pieces
   "Create a URL from a collection of URL pieces."
   [pieces context]
-  (str context (if-not (= \/ (last context)) "/") (str/join "/" pieces)))
+  (str context (when-not (= \/ (last context)) "/") (str/join "/" pieces)))
+
+(defn gu
+  "Generate URL"
+  [routes & {:keys [context] :or {context "/"}}]
+  (fn [& params] (join-pieces (process-segments routes params) context)))
+
+(defn du
+  "Degenerate URL"
+  [routes]
+  (fn [url] (match-segments routes (split-url url))))
