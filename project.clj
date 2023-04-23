@@ -6,5 +6,5 @@
   :dependencies [[org.clojure/clojure "1.11.1"]]
   :plugins [[lein-codox "0.10.8"]]
   :codox {:namespaces  [#"^gudu\."]
-          :source-uri  "https://github.com/thatismatt/gudu/blob/{version}/{filepath}#L{line}"
+          :source-uri  "https://github.com/thatismatt/gudu/blob/{git-commit}/{filepath}#L{line}"
           :output-path "doc"})
